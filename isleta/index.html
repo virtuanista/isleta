@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <title>Isleta · Construye tu rincón en el mar</title>
+  <meta name="description" content="Isleta: un juego acogedor de construir y decorar tu propia isla en el navegador.">
+  <meta name="theme-color" content="#4fc3e0">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='44' rx='28' ry='12' fill='%2363cde6'/%3E%3Cellipse cx='32' cy='38' rx='20' ry='9' fill='%23efd492'/%3E%3Cellipse cx='32' cy='35' rx='15' ry='6' fill='%2386d65a'/%3E%3Cpath d='M33 34 C33 24 35 18 38 12' stroke='%23a77a4c' stroke-width='3' fill='none'/%3E%3Cpath d='M38 12 q-10 -2 -14 6 M38 12 q10 -3 14 5 M38 12 q-4 -8 -12 -6 M38 12 q6 -7 12 -4' stroke='%234caf50' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <canvas id="world" aria-label="Mapa de la isla"></canvas>
+  <div id="vignette"></div>
+
+  <!-- Pantalla de carga -->
+  <div id="splash">
+    <div class="splash-inner">
+      <div class="splash-island"><span class="wave"></span><span class="isle"></span><span class="palm">🌴</span></div>
+      <div class="splash-title">Isleta</div>
+      <div class="splash-bar"><i></i></div>
+    </div>
+  </div>
+
+  <!-- Pantalla de título -->
+  <section id="title" class="screen hidden">
+    <div class="title-card">
+      <h1 class="logo" aria-label="Isleta"></h1>
+      <p class="tagline">Construye tu rincón en el mar</p>
+      <div class="menu" id="title-menu"></div>
+    </div>
+    <div class="title-foot">
+      <button class="chip-btn" id="title-sound" aria-label="Sonido"></button>
+      <span>v1.0 · Hecho con <b>♥</b> y mucho mar</span>
+    </div>
+  </section>
+
+  <!-- Interfaz de juego -->
+  <section id="hud" class="hidden">
+    <div class="hud-top">
+      <button class="profile glass" id="profile" aria-label="Perfil">
+        <div class="avatar-ring">
+          <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" class="ring-bg"/><circle cx="24" cy="24" r="21" class="ring-fg" id="xp-ring"/></svg>
+          <span id="avatar">🐻</span>
+          <b id="lvl">1</b>
+        </div>
+        <div class="profile-txt">
+          <strong id="pname">Nombre</strong>
+          <small id="iname">Isla</small>
+          <div class="xpbar"><i id="xpfill"></i><em id="xptext">0 / 45 XP</em></div>
+        </div>
+      </button>
+      <div class="resources">
+        <div class="pill coins glass" id="pill-coins" data-tip="Monedas"><span class="coin-ico"></span><b id="coins">0</b></div>
+        <div class="pill beauty glass" id="pill-beauty" data-tip="Encanto: decora cerca de los edificios para que produzcan más"><span class="ico">💖</span><b id="beauty">0</b></div>
+        <div class="pill pop glass" id="pill-pop" data-tip="Habitantes"><span class="ico">🧑‍🌾</span><b id="pop">0</b></div>
+      </div>
+      <div class="top-actions" id="top-actions"></div>
+    </div>
+
+    <div class="side-left" id="side-left">
+      <div class="clock glass" id="clock"><span id="clock-ico">☀️</span><b id="clock-txt">Día</b></div>
+      <button class="side-card glass" id="collect-all" hidden></button>
+      <button class="side-card glass expand" id="expand-btn" hidden></button>
+      <div class="zoom glass" id="zoom"></div>
+    </div>
+
+    <aside class="quests glass" id="quests"></aside>
+
+    <div id="info" class="info glass hidden"></div>
+    <div id="hint" class="hint"></div>
+    <div id="combo" class="combo"></div>
+
+    <div class="dock glass" id="dock">
+      <div class="tools" id="tools"></div>
+      <div class="catalog">
+        <div class="tabs" id="tabs"></div>
+        <div class="cards-wrap"><div class="cards" id="cards"></div></div>
+      </div>
+    </div>
+    <div class="savedot" id="savedot">✓ Guardado</div>
+  </section>
+
+  <div id="photo-bar" class="hidden">
+    <button class="btn primary" id="photo-snap">📸 Capturar foto</button>
+    <button class="btn" id="photo-exit">Salir</button>
+  </div>
+
+  <div id="fx"></div>
+  <div id="toasts"></div>
+  <div id="tip" class="tip"></div>
+  <div id="modals"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/draw.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

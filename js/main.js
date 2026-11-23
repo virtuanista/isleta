@@ -17,8 +17,7 @@
   };
   // el audio necesita un gesto del usuario
   const unlock = () => { Sound.init(); };
-  document.addEventListener('pointerdown', unlock);
-  document.addEventListener('keydown', unlock);
+  ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach(ev => document.addEventListener(ev, unlock, true));
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
   window.addEventListener('error', e => console.error('[Isleta]', e.message, e.filename, e.lineno));
 })();

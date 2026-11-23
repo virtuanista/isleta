@@ -9,7 +9,10 @@ const Sound = (() => {
   const PENTA = [0, 2, 4, 7, 9];
 
   function init() {
-    if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+    if (ctx) { if (ctx.state === 'suspended') ctx.resume().catch(() => { }); return; }
+    // en táctil, pointerdown aún no cuenta como gesto: esperar al toque completo evita el aviso de autoplay
+    const ua = navigator.userActivation;
+    if (ua && !ua.isActive && !ua.hasBeenActive) return;
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
     ctx = new AC();

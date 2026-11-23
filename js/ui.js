@@ -66,6 +66,11 @@ const UI = {
       const b = e.target.closest && e.target.closest('.btn, .icon-btn, .tool, .tab, .card, .side-card, .av, .pal');
       if (b && b !== this._lastHoverEl) { this._lastHoverEl = b; Sound.sfx.hover(); }
     });
+    // tras pulsar con ratón o dedo un botón del HUD, soltar el foco: así Espacio (arrastrar) no lo vuelve a activar
+    document.addEventListener('click', e => {
+      const b = e.detail > 0 && e.target.closest && e.target.closest('#hud button, #photo-bar button');
+      if (b) b.blur();
+    });
     document.addEventListener('pointerdown', e => {
       const b = e.target.closest && e.target.closest('.btn, .icon-btn, .tab, .chip-btn, .seg button, .toggle');
       if (b) Sound.init();
@@ -76,6 +81,30 @@ const UI = {
       if (t) { const r = t.getBoundingClientRect(); this.showTip(`<span>${t.dataset.tip}</span>`, r.left + r.width / 2, r.bottom + 8, 'below'); }
     });
     document.addEventListener('pointerout', e => { const t = e.target.closest && e.target.closest('[data-tip]'); if (t) this.hideTip(); });
+    // dentro de un iframe (itch.io), que las teclas y la rueda no desplacen la página que lo contiene
+    const SCROLL_KEYS = [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End'];
+    document.addEventListener('keydown', e => {
+      if (!SCROLL_KEYS.includes(e.key)) return;
+      const t = e.target, tag = t && t.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
+      if (tag === 'BUTTON' && e.key === ' ') return;
+      const sc = t && t.closest && t.closest('.modal');
+      if (sc && sc.scrollHeight > sc.clientHeight + 1) return; // el modal se desplaza solo (overscroll-behavior: contain)
+      e.preventDefault();
+    });
+    document.addEventListener('wheel', e => {
+      for (let el = e.target; el && el !== document.body; el = el.parentElement) {
+        if (!(el instanceof Element)) continue;
+        const cs = getComputedStyle(el);
+        if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1) {
+          if (e.deltaY < 0 ? el.scrollTop > 0 : el.scrollTop + el.clientHeight < el.scrollHeight - 1) return;
+        }
+        if (/(auto|scroll)/.test(cs.overflowX) && el.scrollWidth > el.clientWidth + 1 && Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+          if (e.deltaX < 0 ? el.scrollLeft > 0 : el.scrollLeft + el.clientWidth < el.scrollWidth - 1) return;
+        }
+      }
+      e.preventDefault();
+    }, { passive: false });
     window.addEventListener('beforeunload', () => Game.stop && Game.st && !Game.demo && Game.save(true));
     document.addEventListener('visibilitychange', () => { if (document.hidden && Game.st && !Game.demo) Game.save(true); });
   },
@@ -619,6 +648,10 @@ const UI = {
     const ov = document.createElement('div'); ov.className = 'overlay';
     ov.innerHTML = `<div class="modal ${cls || ''}" role="dialog" aria-modal="true">${closable ? `<button class="x" data-close aria-label="Cerrar">${svg('x')}</button>` : ''}${title ? `<h2>${title}</h2>` : ''}${lead ? `<p class="lead">${lead}</p>` : ''}<div class="mb">${body || ''}</div>${foot ? `<div class="foot">${foot}</div>` : ''}</div>`;
     $('modals').appendChild(ov);
+    // que el foco no se quede en el botón de detrás (Espacio/Intro volverían a pulsarlo)
+    const box = ov.querySelector('.modal'); box.tabIndex = -1;
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    try { box.focus({ preventScroll: true }); } catch (e) { }
     const m = {
       el: ov, closable, q: s => ov.querySelector(s),
       close: (silent) => {

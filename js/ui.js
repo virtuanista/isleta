@@ -32,6 +32,8 @@ const CAT_ICO = { casas: 'home2', negocios: 'shop', naturaleza: 'tree', deco: 's
 const svg = (n, cls = 'i') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICO[n] || ''}</svg>`;
 const $ = id => document.getElementById(id);
 const coinS = '<span class="coin-ico s"></span>';
+const isTouch = () => matchMedia('(pointer: coarse)').matches;
+const tapTxt = (cap) => isTouch() ? (cap ? 'Toca' : 'toca') : (cap ? 'Haz clic en' : 'haz clic en');
 const ICON_URL = {};
 function iconURL(id, kind = 'item') {
   const k = kind + id + (kind === 'terrain' && Game.st ? Game.st.palette : '');
@@ -397,11 +399,11 @@ const UI = {
   updateHint() {
     const h = $('hint'), t = Game.tool, st = Game.st;
     let txt = '', btns = '';
-    if (t === 'build') { const d = ITEM[Game.sel]; txt = `Toca la isla para colocar <b>${d.name}</b>`; btns = `<button data-h="rot">${svg('rotate')}Girar <span class="kbd" style="background:transparent;border-color:rgba(255,255,255,.3);color:#fff">R</span></button><button data-h="end">${svg('x')}Terminar</button>`; }
+    if (t === 'build') { const d = ITEM[Game.sel]; txt = `${tapTxt(true)} la isla para colocar <b>${d.name}</b>`; btns = `<button data-h="rot">${svg('rotate')}Girar <span class="kbd" style="background:transparent;border-color:rgba(255,255,255,.3);color:#fff">R</span></button><button data-h="end">${svg('x')}Terminar</button>`; }
     else if (t === 'paint') { const d = TERRAINS[Game.sel]; txt = `Arrastra para pintar <b>${d.name}</b>`; btns = `<button data-h="b1" class="${Game.brush === 1 ? 'on' : ''}">1×1</button><button data-h="b3" class="${Game.brush === 3 ? 'on' : ''}">3×3</button><button data-h="end">${svg('x')}Terminar</button>`; }
-    else if (t === 'move') { txt = Game.carry ? `Elige dónde soltar <b>${ITEM[Game.carry.id].name}</b>` : 'Toca un objeto para moverlo'; btns = (Game.carry ? `<button data-h="rot">${svg('rotate')}Girar</button>` : '') + `<button data-h="end">${svg('x')}Terminar</button>`; }
-    else if (t === 'remove') { txt = 'Toca un objeto para venderlo (recuperas el 50 %)'; btns = `<button data-h="end">${svg('x')}Terminar</button>`; }
-    else if (st.stats.collects < 8) txt = matchMedia('(pointer: coarse)').matches ? 'Toca las monedas ★ para cobrar · Arrastra para moverte' : 'Toca las monedas ★ para cobrar · Arrastra para moverte · Rueda para zoom';
+    else if (t === 'move') { txt = Game.carry ? `Elige dónde soltar <b>${ITEM[Game.carry.id].name}</b>` : `${tapTxt(true)} un objeto para moverlo`; btns = (Game.carry ? `<button data-h="rot">${svg('rotate')}Girar</button>` : '') + `<button data-h="end">${svg('x')}Terminar</button>`; }
+    else if (t === 'remove') { txt = `${tapTxt(true)} un objeto para venderlo (recuperas el 50 %)`; btns = `<button data-h="end">${svg('x')}Terminar</button>`; }
+    else if (st.stats.collects < 8) txt = isTouch() ? 'Toca las monedas ★ para cobrar · Arrastra para moverte · Pellizca para el zoom' : 'Haz clic en las monedas ★ para cobrar · Arrastra para moverte · Rueda para el zoom';
     h.innerHTML = txt ? `<span class="txt">${txt}</span>${btns}` : '';
     h.classList.toggle('empty', !txt);
     h.querySelectorAll('button').forEach(b => b.onclick = () => {
@@ -585,7 +587,7 @@ const UI = {
     let h = `<b>${d.name}</b>`;
     if (isBuilding(d)) {
       const cyc = Game.cyclesOf(it);
-      h += cyc ? `<span class="ok">¡Listo! Toca para cobrar ${coinS} ${fmt(Game.incomeOf(it) * cyc)}</span>` : `<span class="muted">${coinS} ${fmt(Game.incomeOf(it))} en ${fmtTime(d.period - ((Date.now() - it.t) / 1000) % d.period)}</span>`;
+      h += cyc ? `<span class="ok">¡Listo! Haz clic para cobrar ${coinS} ${fmt(Game.incomeOf(it) * cyc)}</span>` : `<span class="muted">${coinS} ${fmt(Game.incomeOf(it))} en ${fmtTime(d.period - ((Date.now() - it.t) / 1000) % d.period)}</span>`;
     } else if (d.beauty) h += `<span class="muted">💖 Encanto +${d.beauty}</span>`;
     this.showTip(h, sx + 16, sy + 18, 'right');
     this._hoverTip = true;
@@ -734,8 +736,8 @@ const UI = {
       body: `<div class="help">
         <p class="lead" style="margin:0">En <b>Isleta</b> construyes y decoras tu propia isla. No hay prisa ni forma de perder: ¡solo crear algo bonito!</p>
         <h3>🌱 Lo básico</h3><ul>
-          <li>🏠 <span><b>Viviendas</b> traen habitantes que pasean por la isla y producen algunas monedas.</span></li>
-          <li>🏪 <span><b>Negocios</b> generan monedas cada cierto tiempo. Toca la moneda ★ para cobrar (se acumulan hasta ${MAX_STACK} veces).</span></li>
+          <li>🏠 <span>Las <b>viviendas</b> traen habitantes que pasean por la isla y producen algunas monedas.</span></li>
+          <li>🏪 <span>Los <b>negocios</b> generan monedas cada cierto tiempo. Toca la moneda ★ para cobrar (se acumulan hasta ${MAX_STACK} veces).</span></li>
           <li>💖 <span><b>Encanto</b>: la naturaleza y la decoración a 3 casillas de un edificio aumentan su producción hasta un +100 %.</span></li>
           <li>⭐ <span>Ganas <b>experiencia</b> al construir, cobrar y completar misiones. Cada nivel desbloquea objetos nuevos.</span></li>
           <li>🏝️ <span>Cuando subas de nivel podrás <b>ampliar la isla</b> para tener más espacio.</span></li>
@@ -745,14 +747,15 @@ const UI = {
         <h3>🖱️ Controles</h3><ul>
           <li><span class="kbd">Clic</span><span>Colocar, cobrar o inspeccionar</span></li>
           <li><span class="kbd">Arrastrar</span><span>Mover la cámara · pintar suelo · recoger varias monedas</span></li>
-          <li><span class="kbd">Rueda</span><span>Zoom (o pellizca en el móvil)</span></li>
-          <li><span class="kbd">Clic dcho.</span><span>Cancelar la herramienta</span></li>
+          <li><span class="kbd">Rueda</span> <span class="kbd">+</span> <span class="kbd">−</span><span>Zoom (o pellizca en el móvil)</span></li>
+          <li><span class="kbd">Clic derecho</span><span>Cancelar la herramienta</span></li>
           <li><span class="kbd">R</span><span>Girar el objeto</span></li>
           <li><span class="kbd">H</span> <span class="kbd">M</span> <span class="kbd">X</span><span>Mano · Mover · Vender</span></li>
           <li><span class="kbd">B</span><span>Pincel 1×1 / 3×3 al pintar</span></li>
           <li><span class="kbd">C</span><span>Recoger todas las monedas</span></li>
           <li><span class="kbd">Ctrl</span> + <span class="kbd">Z</span><span>Deshacer</span></li>
-          <li><span class="kbd">WASD</span><span>Mover la cámara</span></li>
+          <li><span class="kbd">WASD</span> <span class="kbd">Flechas</span><span>Mover la cámara</span></li>
+          <li><span class="kbd">Espacio</span> + <span class="kbd">Arrastrar</span><span>Mover la cámara mientras pintas</span></li>
           <li><span class="kbd">P</span><span>Modo foto</span></li>
           <li><span class="kbd">Esc</span><span>Cerrar / cancelar</span></li>
         </ul></div>`,

@@ -1202,11 +1202,16 @@ const Game = {
     if (act.tiles.length) { this.undoStack.push(act); this.afterChange(true); }
   },
   zoomBy(f) { this.zoomAnchor = null; this.cam.tz = clamp(this.cam.tz * f, 0.45, 2.6); },
-  centerView() {
+  centerView(instant) {
     const C = WORLD / 2, [wx, wy] = this.iso(C, C);
-    this.cam.tz = this.W < 700 ? 0.8 : 1.1; this.zoomAnchor = null;
+    this.cam.tz = this.H < 500 ? 0.62 : this.W < 700 ? 0.8 : 1.1;
+    if (instant) this.cam.z = this.cam.tz;
     const z = this.cam.z;
-    this.cam.x = this.W / 2 - wx * z; this.cam.y = this.H / 2 - wy * z - 30;
+    // sube un poco la isla para compensar el catálogo de abajo
+    const dock = document.getElementById('dock'), dh = dock && dock.offsetParent ? dock.offsetHeight + 12 : 0;
+    const cy = this.H / 2 - dh / 4;
+    this.cam.x = this.W / 2 - wx * z; this.cam.y = cy - wy * z - 30;
+    this.zoomAnchor = [this.W / 2, cy - 30];
   },
   photo() {
     this.render(true);

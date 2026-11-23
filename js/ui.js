@@ -209,6 +209,7 @@ const UI = {
       const hud = $('hud'); hud.classList.remove('hidden'); hud.classList.add('entering');
       setTimeout(() => hud.classList.remove('entering'), 1200);
       this.buildHUD();
+      Game.centerView(true);
       setTimeout(() => { if (isNew || !st.tutorial) this.tutorial(); else this.welcomeBack(away); }, 700);
     }, 420);
   },
@@ -224,7 +225,7 @@ const UI = {
       `¡Hola, <b>${escapeHtml(st.player)}</b>! Soy <b>Marea</b>, la tortuga guardiana de <b>${escapeHtml(st.island)}</b>. Te ayudaré a convertir esta isleta en el rincón más bonito del mar. 🌊`,
       `Abajo tienes el <b>catálogo</b>. Elige algo y toca la isla para colocarlo. Las <b>viviendas</b> traen vecinos y los <b>negocios</b> generan monedas ${coinS}.`,
       `Cuando un edificio muestre una moneda ★ encima, <b>tócala para cobrar</b>. ¡También puedes arrastrar el dedo o el ratón por encima de varias a la vez!`,
-      `La <b>decoración</b> y la naturaleza dan <b>Encanto 💖</b>: cerca de tus edificios hace que produzcan hasta el <b>doble</b>. Usa <span class="kbd">R</span> para girar objetos.`,
+      `La <b>decoración</b> y la naturaleza dan <b>Encanto 💖</b>: cerca de tus edificios hace que produzcan hasta el <b>doble</b>. ${matchMedia('(pointer: coarse)').matches ? 'Con el botón <b>Girar</b> cambias la orientación de los objetos.' : 'Usa <span class="kbd">R</span> para girar objetos.'}`,
       `Completa <b>misiones</b> 📜, abre los <b>regalos</b> 🎁 que aparecen y sube de nivel para desbloquear cosas nuevas. Tu progreso se guarda solo. ¡A construir!`,
     ];
     let i = 0;
@@ -503,7 +504,7 @@ const UI = {
     const icon = q => ({ place: '🔨', cat: q.param === 'deco' ? '🎀' : q.param === 'casas' ? '🏠' : '🏪', tag: q.param === 'tree' ? '🌳' : '🌷', paint: '🎨', collect: '🪙', beauty: '💖', pop: '🧑‍🌾', level: '⭐', gifts: '🎁', expand: '🏝️', earned: '💰' }[q.type] || '📜');
     if (full || !el._built) {
       el._built = true;
-      const collapsed = Game.settings.questsCollapsed != null ? Game.settings.questsCollapsed : window.innerWidth < 720;
+      const collapsed = Game.settings.questsCollapsed != null ? Game.settings.questsCollapsed : (window.innerWidth < 720 || window.innerHeight < 500);
       el.classList.toggle('collapsed', !!collapsed);
       const nDone = st.quests.filter(q => q.done).length;
       el.innerHTML = `<div class="q-head" id="q-head"><span>📜 Misiones ${nDone ? `<span class="badge" style="background:var(--pink);color:#fff;border-radius:10px;padding:0 7px;font-size:12px">${nDone}</span>` : ''}</span>${svg('caret', 'i caret')}</div>

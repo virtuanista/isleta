@@ -95,6 +95,7 @@ svg.i { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-widt
 /* ---------- HUD ---------- */
 #hud { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
 #hud > *, #hud .hud-top > * { pointer-events: auto; }
+#hud > .combo, #hud > .hint.empty { pointer-events: none; } /* invisibles: que no tapen la isla */
 #hud.entering .hud-top { animation: dropIn .6s cubic-bezier(.2, 1.4, .4, 1) both; }
 #hud.entering .dock { animation: riseIn .7s .1s cubic-bezier(.2, 1.3, .4, 1) both; }
 #hud.entering .quests, #hud.entering .side-left { animation: fadeIn .6s .3s both; }
@@ -287,6 +288,8 @@ svg.i { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-widt
 .modal .x { position: absolute; top: 14px; right: 14px; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; color: var(--ink2); transition: background .15s; }
 .modal .x:hover { background: rgba(43, 45, 66, .06); }
 .modal .foot { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+/* en pantallas bajas el modal se desplaza: los botones de abajo quedan siempre a la vista */
+.modal:not(.lvl-modal) .foot { position: sticky; bottom: -24px; margin: 20px -24px -24px; padding: 12px 24px 24px; background: linear-gradient(rgba(255, 255, 255, 0), #fff 14px); z-index: 1; }
 .modal .foot.center { justify-content: center; }
 .field { margin-bottom: 16px; }
 .field label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
@@ -435,8 +438,58 @@ body.photo #vignette { background: radial-gradient(ellipse at center, transparen
   .card { width: 78px; } .card img { width: 48px; height: 48px; } .card .nm { font-size: 11px; }
   .hint { font-size: 12px; }
   .modal { padding: 20px; border-radius: 24px; }
+  .modal:not(.lvl-modal) .foot { bottom: -20px; margin: 16px -20px -20px; padding: 12px 20px 20px; }
+  .info .acts { flex-wrap: wrap; } .info .acts .btn { flex: 1 1 40%; }
   .avatars { grid-template-columns: repeat(4, 1fr); }
   .combo { top: 150px; }
+}
+/* móvil en horizontal (poca altura): HUD y catálogo compactos para dejar sitio a la isla */
+@media (max-height: 500px) {
+  .hud-top { top: 6px; left: 8px; right: 8px; gap: 8px; }
+  .profile { padding: 4px 12px 4px 4px; }
+  .avatar-ring { width: 40px; height: 40px; } #avatar { font-size: 20px; }
+  .profile-txt { min-width: 90px; } .profile-txt strong { font-size: 14px; max-width: 120px; } .profile-txt small { display: none; }
+  .resources { padding-top: 2px; gap: 6px; }
+  .pill { height: 36px; font-size: 15px; min-width: 0; padding: 0 12px 0 5px; } .pill.coins { min-width: 92px; }
+  .pill .ico, .coin-ico { width: 26px; height: 26px; }
+  .top-actions { gap: 6px; } .top-actions .icon-btn { width: 40px; height: 40px; border-radius: 13px; }
+  .side-left { top: 58px; left: 8px; gap: 6px; }
+  .clock { display: none; }
+  .side-card { padding: 6px 10px; font-size: 12.5px; border-radius: 14px; } .side-card .em { font-size: 18px; }
+  .zoom { flex-direction: row; } .zoom button { width: 40px; height: 40px; } .zoom button + button { border-top: 0; border-left: 1px solid var(--line); }
+  .quests { top: 56px; right: 8px; width: 230px; padding: 6px 8px; max-height: calc(100vh - var(--dockh, 150px) - 76px); }
+  .q-head { font-size: 14px; padding: 2px 2px 4px; }
+  .quest { padding: 7px 9px; } .quest .qt { font-size: 12.5px; }
+  #toasts { top: 52px; } .toast { font-size: 13px; padding: 7px 14px; }
+  .toast.ach .big { width: 34px; height: 34px; font-size: 22px; }
+  .dock { bottom: calc(6px + var(--safe-b)); padding: 6px; gap: 6px; border-radius: 20px; width: calc(100vw - 16px); }
+  .tools { gap: 4px; padding-right: 6px; }
+  .tool { width: 48px; height: 44px; font-size: 9.5px; border-radius: 13px; }
+  .catalog { gap: 4px; }
+  .tab { padding: 5px 10px; font-size: 12.5px; min-height: 34px; }
+  .cards { gap: 6px; padding: 2px 2px 4px; }
+  .card { width: 70px; padding: 4px 4px 5px; border-radius: 13px; } .card img { width: 38px; height: 38px; }
+  .card .nm { font-size: 10.5px; height: 24px; } .card .pr { font-size: 12px; }
+  .card .lock { top: 12px; font-size: 10px; padding: 2px 6px; }
+  .hint, .info { bottom: calc(var(--dockh, 150px) + 12px + var(--safe-b)); }
+  .hint { font-size: 12px; }
+  .info { padding: 10px; width: min(400px, calc(100vw - 24px)); }
+  .info .ih img { width: 44px; height: 44px; } .info .ih h3 { font-size: 16px; }
+  .info .stats { margin: 6px 0; } .info .acts .btn { padding: 7px; font-size: 13px; }
+  .savedot { bottom: calc(var(--dockh, 150px) + 14px + var(--safe-b)); }
+  .modal { padding: 18px 20px; border-radius: 22px; max-height: calc(100vh - 16px); }
+  .modal:not(.lvl-modal) .foot { bottom: -18px; margin: 14px -20px -18px; padding: 10px 20px 18px; }
+  .card.sel { transform: none; }
+  .overlay { padding: 8px; }
+}
+/* pantallas táctiles: sin atajos de teclado y con objetivos de toque de al menos 40 px */
+@media (pointer: coarse) {
+  .hint .kbd { display: none; }
+  .tab { min-height: 40px; }
+}
+@media (pointer: coarse) and (max-width: 720px) {
+  .zoom { display: flex; flex-direction: row; }
+  .zoom button + button { border-top: 0; border-left: 1px solid var(--line); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

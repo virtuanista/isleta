@@ -68,7 +68,7 @@ const ITEMS = [
   { id: 'willow',    cat: 'naturaleza', name: 'Sauce',          cost: 60, lvl: 7, w: 1, h: 1, hgt: 64, beauty: 5, tags: ['tree'], desc: 'Ramas que acarician el suelo.' },
   { id: 'crystal',   cat: 'naturaleza', name: 'Cristal brillante', cost: 120, lvl: 10, w: 1, h: 1, hgt: 40, beauty: 8, glow: '#9fe7ff', desc: 'Brilla con luz propia por la noche.' },
   // Decoración
-  { id: 'fence',     cat: 'deco', name: 'Valla',         cost: 3,   lvl: 1, w: 1, h: 1, hgt: 20, beauty: 1, desc: 'Gira con R para cambiar la dirección.' },
+  { id: 'fence',     cat: 'deco', name: 'Valla',         cost: 3,   lvl: 1, w: 1, h: 1, hgt: 20, beauty: 1, desc: 'Gírala para cambiar su dirección.' },
   { id: 'bench',     cat: 'deco', name: 'Banco',         cost: 15,  lvl: 1, w: 1, h: 1, hgt: 20, beauty: 2, desc: 'Para descansar y mirar el mar.' },
   { id: 'pot',       cat: 'deco', name: 'Maceta',        cost: 8,   lvl: 1, w: 1, h: 1, hgt: 22, beauty: 1, desc: 'Barro cocido y una planta feliz.' },
   { id: 'lamp',      cat: 'deco', name: 'Farola',        cost: 20,  lvl: 2, w: 1, h: 1, hgt: 50, beauty: 2, glow: '#ffd27a', desc: 'Se enciende al anochecer.' },

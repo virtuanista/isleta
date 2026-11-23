@@ -4,7 +4,14 @@
    ========================================================= */
 const Store = {
   KEY: 'isleta.v1', SKEY: 'isleta.settings',
-  db() { try { return JSON.parse(localStorage.getItem(this.KEY)) || { slots: {}, last: null }; } catch (e) { return { slots: {}, last: null }; } },
+  db() {
+    let d = null;
+    try { d = JSON.parse(localStorage.getItem(this.KEY)); } catch (e) { }
+    if (!d || typeof d !== 'object' || !d.slots || typeof d.slots !== 'object') return { slots: {}, last: null };
+    // descarta ranuras dañadas para que el menú no se rompa
+    for (const k of Object.keys(d.slots)) { const s = d.slots[k]; if (!s || typeof s !== 'object' || !s.id || !Array.isArray(s.items) || !Array.isArray(s.terrain)) delete d.slots[k]; }
+    return d;
+  },
   write(db) { try { localStorage.setItem(this.KEY, JSON.stringify(db)); return true; } catch (e) { console.warn('save failed', e); return false; } },
   save(st) { const db = this.db(); st.lastPlayed = Date.now(); db.slots[st.id] = st; db.last = st.id; return this.write(db); },
   list() { const db = this.db(); return Object.values(db.slots).sort((a, b) => b.lastPlayed - a.lastPlayed); },
@@ -149,7 +156,12 @@ const Game = {
   stop() { if (this.st && !this.demo) this.save(true); this.running = false; },
   save(withThumb) {
     if (!this.st || this.demo) return;
-    Store.save(this.st);
+    if (!Store.save(this.st)) {
+      // almacenamiento lleno o bloqueado (p. ej. cookies de terceros desactivadas en el iframe)
+      if (!this._saveWarned) { this._saveWarned = true; UI.toast('⚠️ No se puede guardar: el navegador bloquea el almacenamiento local', 'error', 6000); }
+      return;
+    }
+    this._saveWarned = false;
     if (withThumb) { try { Store.thumb(this.st.id, this.makeThumb()); } catch (e) { } }
     UI.saved();
   },

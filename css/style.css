@@ -438,6 +438,7 @@ body.photo #vignette { background: radial-gradient(ellipse at center, transparen
   .card { width: 78px; } .card img { width: 48px; height: 48px; } .card .nm { font-size: 11px; }
   .hint { font-size: 12px; white-space: normal; border-radius: 20px; line-height: 1.3; width: max-content; }
   .hint button { white-space: nowrap; flex: none; }
+  .savedot { bottom: calc(var(--dockh, 190px) + 84px + var(--safe-b)); } /* por encima de la pista a dos líneas */
   .modal { padding: 20px; border-radius: 24px; }
   .modal:not(.lvl-modal) .foot { bottom: -20px; margin: 16px -20px -20px; padding: 12px 20px 20px; }
   .info .acts { flex-wrap: wrap; } .info .acts .btn { flex: 1 1 40%; }
@@ -482,6 +483,13 @@ body.photo #vignette { background: radial-gradient(ellipse at center, transparen
   .modal:not(.lvl-modal) .foot { bottom: -18px; margin: 14px -20px -18px; padding: 10px 20px 18px; }
   .card.sel { transform: none; }
   .overlay { padding: 8px; }
+  /* si además el ancho es ≤ 720 px, deshacer la disposición del móvil en vertical */
+  .hud-top { flex-wrap: nowrap; }
+  .resources { position: static; order: 0; width: auto; margin: 0 auto; padding-top: 2px; }
+  .dock { flex-direction: row; }
+  .tools { grid-template-columns: 1fr 1fr; border-right: 1px solid var(--line); border-bottom: 0; padding: 0 6px 0 0; }
+  .tool { flex-direction: column; gap: 2px; }
+  .combo { top: 60px; }
 }
 /* pantallas táctiles: sin atajos de teclado y con objetivos de toque de al menos 40 px */
 @media (pointer: coarse) {

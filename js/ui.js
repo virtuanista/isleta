@@ -435,7 +435,7 @@ const UI = {
     // recoger todo
     const ready = st.items.reduce((n, it) => n + (Game.cyclesOf(it) > 0 ? 1 : 0), 0);
     const ca = $('collect-all');
-    if (ready >= 2) { ca.hidden = false; const h = `<span class="em">🧺</span><span>Recoger todo<small>${ready} edificios listos · C</small></span>`; if (ca._h !== h) { ca.innerHTML = h; ca._h = h; } ca.classList.add('ready'); }
+    if (ready >= 2) { ca.hidden = false; const h = `<span class="em">🧺</span><span>Recoger todo<small>${ready} edificios listos${isTouch() ? '' : ' · C'}</small></span>`; if (ca._h !== h) { ca.innerHTML = h; ca._h = h; } ca.classList.add('ready'); }
     else ca.hidden = true;
     // ampliar
     const e = Game.expandCost(), eb = $('expand-btn');
@@ -563,7 +563,7 @@ const UI = {
     $('i-rot').onclick = () => { it.f = it.f ? 0 : 1; it.pulse = performance.now(); Sound.sfx.rotate(); Game.dirty = true; };
     $('i-sell').onclick = () => {
       const sell = () => Game.removeItem(it);
-      if (d.cost >= 200) this.confirm(`¿Vender ${d.name}?`, `Recuperarás <b>${fmt(refund)}</b> monedas (el 50 %). Puedes deshacerlo con Ctrl+Z.`, 'Vender', sell, true);
+      if (d.cost >= 200) this.confirm(`¿Vender ${d.name}?`, `Recuperarás <b>${fmt(refund)}</b> monedas (el 50 %). Puedes deshacerlo con ${isTouch() ? 'el botón Deshacer' : 'Ctrl+Z'}.`, 'Vender', sell, true);
       else sell();
     };
     this.updateInfo();
@@ -587,7 +587,7 @@ const UI = {
     let h = `<b>${d.name}</b>`;
     if (isBuilding(d)) {
       const cyc = Game.cyclesOf(it);
-      h += cyc ? `<span class="ok">¡Listo! Haz clic para cobrar ${coinS} ${fmt(Game.incomeOf(it) * cyc)}</span>` : `<span class="muted">${coinS} ${fmt(Game.incomeOf(it))} en ${fmtTime(d.period - ((Date.now() - it.t) / 1000) % d.period)}</span>`;
+      h += cyc ? `<span class="ok">¡Listo! ${isTouch() ? 'Toca' : 'Haz clic'} para cobrar ${coinS} ${fmt(Game.incomeOf(it) * cyc)}</span>` : `<span class="muted">${coinS} ${fmt(Game.incomeOf(it))} en ${fmtTime(d.period - ((Date.now() - it.t) / 1000) % d.period)}</span>`;
     } else if (d.beauty) h += `<span class="muted">💖 Encanto +${d.beauty}</span>`;
     this.showTip(h, sx + 16, sy + 18, 'right');
     this._hoverTip = true;

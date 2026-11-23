@@ -90,7 +90,7 @@ const Sound = (() => {
   }
   // nota pentatónica según índice (para combos ascendentes)
   function pent(i, base = 72) {
-    i = Math.max(0, i);
+    i = Math.max(0, Math.floor(i) || 0); // índice entero: PENTA[2.1] daría NaN y una excepción en Web Audio
     const oct = Math.floor(i / 5), deg = i % 5;
     return midi(base + oct * 12 + PENTA[deg]);
   }

@@ -326,8 +326,8 @@ const Game = {
     if (c.n > this.st.stats.maxCombo) this.st.stats.maxCombo = c.n;
     if (c.n >= 3) UI.combo(c.n);
     if (c.n % 10 === 0 && kind !== 'paint') {
-      const b = 10 + this.st.level * 4;
-      setTimeout(() => { Sound.sfx.combo(c.n / 10); this.addCoins(b, null, null, { count: 5 }); UI.toast(`🔥 ¡Racha x${c.n}! +${b} monedas`, 'combo'); }, 120);
+      const b = 10 + this.st.level * 4, n = c.n; // n fijo: c.n puede seguir subiendo antes del setTimeout
+      setTimeout(() => { Sound.sfx.combo(n / 10); this.addCoins(b, null, null, { count: 5 }); UI.toast(`🔥 ¡Racha x${n}! +${b} monedas`, 'combo'); }, 120);
     }
   },
   place(id, x, y) {

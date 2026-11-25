@@ -51,3 +51,19 @@ Código, arte y sonido originales, publicados con licencia [MIT](LICENSE). La ti
 *Isleta* is a cozy island-building game for the browser: build, decorate and complete quests to turn a tiny island into the nicest spot in the sea. All graphics are drawn with Canvas 2D and all sound is synthesized with Web Audio, with no dependencies. [Play it in your browser](https://virtuanista.github.io/isleta/).
 
 </details>
+
+<p align="center">
+	Repositorio generado por <a href="https://github.com/virtuanista" target="_blank">virtu 🎣</a>
+</p>
+
+<p align="center">
+	<img src="https://open.soniditos.com/cat_footer.svg" alt="Gatito" />
+</p>
+
+<p align="center">
+	Copyright &copy; 2026
+</p>
+
+<p align="center">
+	<a href="LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=d9e0ee&colorA=363a4f&colorB=b7bdf8" alt="Licencia MIT" /></a>
+</p>

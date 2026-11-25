@@ -1,3 +1,5 @@
+<p align="center"><b>Español</b> · <a href="README.en.md">English</a></p>
+
 <div align="center">
 
 # Isleta 🏝️
@@ -44,13 +46,6 @@ La partida se guarda sola en el almacenamiento local del navegador, y puedes ten
 ## Licencia
 
 Código, arte y sonido originales, publicados con licencia [MIT](LICENSE). La tipografía Fredoka (SIL Open Font License) se carga desde Google Fonts.
-
-<details>
-<summary><b>In English</b></summary>
-
-*Isleta* is a cozy island-building game for the browser: build, decorate and complete quests to turn a tiny island into the nicest spot in the sea. All graphics are drawn with Canvas 2D and all sound is synthesized with Web Audio, with no dependencies. [Play it in your browser](https://virtuanista.github.io/isleta/).
-
-</details>
 
 <p align="center">
 	Repositorio generado por <a href="https://github.com/virtuanista" target="_blank">virtu 🎣</a>

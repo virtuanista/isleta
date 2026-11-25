@@ -32,7 +32,7 @@ The game saves itself to the browser's local storage, and you can have several i
 
 ## What's in the game
 
-- **More than 40 items** to build, in 4 categories: houses, businesses, nature and decoration.
+- **More than 40 items** to build, in 5 categories: homes, businesses, nature, decoration and floors.
 - **Tools** to move, rotate, change the ground and remove items.
 - **Customize your island**: avatar, name and style: Primavera (Spring), Tropical or Otoño (Autumn).
 - **Quests** that guide you and give you coins and experience.

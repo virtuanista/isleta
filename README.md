@@ -32,7 +32,7 @@ La partida se guarda sola en el almacenamiento local del navegador, y puedes ten
 
 ## Contenido
 
-- **Más de 40 elementos** para construir, en 4 categorías: casas, negocios, naturaleza y decoración.
+- **Más de 40 elementos** para construir, en 5 categorías: viviendas, negocios, naturaleza, decoración y suelos.
 - **Herramientas** para mover, rotar, cambiar los suelos y quitar elementos.
 - **Personaliza tu isla**: avatar, nombre y estilo (Primavera, Tropical u Otoño).
 - **Misiones** que te guían y te dan monedas y experiencia.
